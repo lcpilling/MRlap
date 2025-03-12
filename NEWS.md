@@ -3,6 +3,7 @@
 ## Changes
 
 - Update col names for the returned `harmonised_mr_data` object that contains the pruned and aligned instruments (this was not originally intended to be returned, so did not have consistent naming)
+- Recognise GWAS catalog format headers automatically
 
 
 # MRlap 0.0.3.3 (2025-01-09)

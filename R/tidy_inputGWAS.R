@@ -19,15 +19,15 @@ tidy_inputGWAS <- function(GWAS, need_chrpos = TRUE, verbose=FALSE){
 
   if(verbose) cat("# Preparation of the data... \n")
 
-  GWASnames = list(SNPID = c("rsid", "snpid", "snp", "rnpid", "rs"),
-                   CHR = c("chr"),
-                   POS = c("pos"),
-                   ALT = c("a1", "alt", "alts"),
-                   REF = c("ref", "a0", "a2"),
+  GWASnames = list(SNPID = c("rsid", "snpid", "snp", "rnpid", "rs", "rs_id"),
+                   CHR = c("chr", "chromosome"),
+                   POS = c("pos", "base_pair_location"),
+                   ALT = c("a1", "alt", "alts", "effect_allele"),
+                   REF = c("ref", "a0", "a2", "other_allele"),
                    BETA = c("beta", "b", "beta1", "or"),
-                   SE = c("se", "std"),
+                   SE = c("se", "std", "standard_error"),
                    Z = c("z", "zscore"),
-                   N = c("n", "neff"),
+                   N = c("n", "neff", "n_samples"),
                    Ncases = c("n_cases", "ncases", "n_case", "ncase"),
                    Ncontrols = c("n_controls", "ncontrols", "n_control", "ncontrol"))
 
