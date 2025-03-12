@@ -291,11 +291,11 @@ MRlap <- function(exposure,
     dplyr::filter(TwoSampleMR_res, method == "MR Egger"),
   )
   
-  TwoSampleMR_res <- TwoSampleMR_res |> mutate(
-    method = if_else(row_number() == 2, "Inverse variance weighted (corrected)", method),
-    b = if_else(row_number() == 2, "Inverse variance weighted (corrected)", results_MR$$corrected_effect),
-    se = if_else(row_number() == 2, "Inverse variance weighted (corrected)", results_MR$$corrected_effect_se),
-    p = if_else(row_number() == 2, "Inverse variance weighted (corrected)", results_MR$$corrected_effect_p)
+  TwoSampleMR_res <- TwoSampleMR_res |> dplyr::mutate(
+    method = dplyr::if_else(dplyr::row_number() == 2, "Inverse variance weighted (corrected)", method),
+    b = dplyr::if_else(dplyr::row_number() == 2, results_MR$corrected_effect, b), 
+    se = dplyr::if_else(dplyr::row_number() == 2, results_MR$corrected_effect_se, se), 
+    pval = dplyr::if_else(dplyr::row_number() == 2, results_MR$corrected_effect_p, pval)
   )
 
   # combine and return
