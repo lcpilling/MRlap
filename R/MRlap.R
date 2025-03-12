@@ -241,10 +241,12 @@ MRlap <- function(exposure,
     dplyr::relocate(eaf.outcome, .after=other_allele.outcome) |>
     dplyr::relocate(effect_allele.outcome, other_allele.outcome, .before=Z.out)
 
-  # results -> list of 3
+  # results -> list of 5
   # [[1]] "MR correction"
   # [[2]] "LDsc" : h2X / seh2X / h2Y / seh2Y /
   # [[3]] "GeneticArchitecture" : pi / sigma
+  # [[4]] Harmonised MR input data
+  # [[5]] TwoSampleMR table with correct IVW as additional line
   results_MR=with(c(MR_results, correction_results),
                list("observed_effect" = alpha_obs,
                     "observed_effect_se" = alpha_obs_se,
@@ -278,10 +280,30 @@ MRlap <- function(exposure,
                     list("polygenicity" = pi_x,
                          "perSNP_heritability" = sigma2_x))
 
+
+  # Run TwoSampleMR and add correct IVW as row
+  TwoSampleMR_res <- TwoSampleMR::mr(data_pruned)
+  
+  TwoSampleMR_res <- dplyr::bind_rows(
+    dplyr::filter(TwoSampleMR_res, method == "Inverse variance weighted"),
+    dplyr::filter(TwoSampleMR_res, method == "Inverse variance weighted"),
+    dplyr::filter(TwoSampleMR_res, method != "Inverse variance weighted" & method != "MR Egger"),
+    dplyr::filter(TwoSampleMR_res, method == "MR Egger"),
+  )
+  
+  TwoSampleMR_res <- TwoSampleMR_res |> mutate(
+    method = if_else(row_number() == 2, "Inverse variance weighted (corrected)", method),
+    b = if_else(row_number() == 2, "Inverse variance weighted (corrected)", results_MR$$corrected_effect),
+    se = if_else(row_number() == 2, "Inverse variance weighted (corrected)", results_MR$$corrected_effect_se),
+    p = if_else(row_number() == 2, "Inverse variance weighted (corrected)", results_MR$$corrected_effect_p)
+  )
+
+  # combine and return
   results = list(MRcorrection = results_MR,
                  LDSC = results_LDSC,
                  GeneticArchitecture = results_GeneticArchitecture,
-                 harmonised_mr_data = data_pruned)
+                 harmonised_mr_data = data_pruned,
+                 results_table = TwoSampleMR_res)
 
   return(results)
 }
