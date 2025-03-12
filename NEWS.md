@@ -4,6 +4,7 @@
 
 - Update col names for the returned `harmonised_mr_data` object that contains the pruned and aligned instruments (this was not originally intended to be returned, so did not have consistent naming)
 - Recognise GWAS catalog format headers automatically
+- Include `results_table` in output list. The standard TwoSampleMR results with additional row for corrected IVW (just makes it easier to quickly parse)
 
 
 # MRlap 0.0.3.3 (2025-01-09)
