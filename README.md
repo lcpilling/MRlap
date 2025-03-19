@@ -469,7 +469,7 @@ Pro (2020) - Processor : 2 GHz Quad-Core Intel Core i5 - Memory : 16 GB
 
 A huge thanks to the people helping with `MRlap` improvements!
 
-[Luke Pilling](https://github.com/lukepilling)
+[Luke Pilling](https://github.com/lcpilling)
 
 ## Citation
 
